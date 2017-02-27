@@ -9,8 +9,7 @@
 缓存框架：Redis 3.2.100</br>
 数据库:MySQL 5.7</br>
 搜索:ElasticSearch 2.3.4</br>
-</br>
-
+</br
 前端</br>
 JS框架：jQuery 2.1.1</br>
 CSS框架：Twitter Bootstrap 3.3.7</br>
@@ -39,12 +38,9 @@ Quick Started
 4、将项目导入IDEA,运行（注意：之前别忘了启动mysql，redis，ElasticSearch）</br>
 5、在登录注册界面可以自己注册，也可以使用测试账号登录：用户名：18812345678 密码：123456</br>
 
-<<<<<<< HEAD
-####注
+####注意
 1、由于data.sql太大，这里通过百度网盘提供下载：http://pan.baidu.com/s/1dFj6wJf  
 2、redis（windows版）下载地址：https://github.com/MSOpenTech/redis/releases  
 3、ElasticSearch 提供网盘下载地址：http://pan.baidu.com/s/1jIODE5K  
 （包括了elasticsearch-jdbc，要导入的话运行elasticsearch-2.3.4\elasticsearch-jdbc\bin\mysql-simple-example.bat）      
 4、目前版本问题bug较多，有一部分只是演示页面，后续会逐渐修复与更新。
-=======
->>>>>>> parent of b97af2a... some modify

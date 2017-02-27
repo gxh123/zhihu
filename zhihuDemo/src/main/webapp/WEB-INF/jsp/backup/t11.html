@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap 实例 - 模态框（Modal）插件</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<!-- 按钮触发模态框 -->
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    提问
+</button>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 580px">
+            <div class="modal-header" style="height: 50px;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h5 class="modal-title" id="myModalLabel" style="font-weight: bold">
+                    提问
+                </h5>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" method="post">
+                    <textarea placeholder="写下你的问题" style="width: 550px;height: 50px;font-size:14px;resize:none;margin-top: 10px"></textarea>
+                    <div style="margin-top: 20px">问题说明（可选）：</div>
+                    <textarea placeholder="" style="padding-left:3px;width: 550px;height:110px;resize:none;"></textarea>
+                    <div style="margin-top: 20px">选择话题：</div>
+                    <input type="text" style="padding-left:3px;width: 550px;height: 35px">
+                </form>
+            </div>
+
+            <div class="modal-footer" style="border: none">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                </button>
+                <button type="button" class="btn btn-primary">
+                    发布
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+
+<script>
+//    $('#myModal').modal({backdrop: 'static', keyboard: false});
+
+    $('.modal-footer .btn-primary').click(function(e){
+        e.preventDefault();
+        alert($('#myField').val());
+        /*
+         $.post('http://path/to/post',
+         $('#myForm').serialize(),
+         function(data, status, xhr){
+         // do something here with response;
+         });
+         */
+    });
+</script>
+</body>
+</html>

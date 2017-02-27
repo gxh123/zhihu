@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gxh.dao.QuestionDao" >
+
+    <insert id="addQuestion" parameterType="com.gxh.model.Question" >
+        insert into question ( questioner_id, question_title, question_content)
+                  values (#{questioner.id}, #{title}, #{content})
+    </insert>
+
+    <select id="selectById" parameterType="long" resultMap="QuestionResultMap">
+      select question.question_id,questioner_id,question_title,question_content,answer_id,answer_content,answer_agreements,answerer_id,user_id,user_name,user_avatar
+      from question LEFT JOIN answer on question.question_id = answer.question_id LEFT JOIN user on answer.answerer_id = user.user_id
+      where question.question_id = #{id};
+    </select>
+    <resultMap id="QuestionResultMap" type="com.gxh.model.Question">
+        <id column="question_id" property="id" />
+        <result column="questioner_id" property="questioner.id"/>
+        <result column="question_title" property="title" />
+        <result column="question_content" property="content"/>
+        <collection property="answers" ofType="com.gxh.model.Answer">
+            <id column="answer_id" property="id"/>
+            <result column="answer_content" property="content"/>
+            <result column="answer_agreements" property="agreements"/>
+            <association column="answerer_id" property="answerer" javaType="com.gxh.model.User">
+                <id column="user_id" property="id"/>
+                <result column="user_name" property="name"/>
+                <result column="user_avatar" property="avatar"/>
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="selectByQuestion" parameterType="com.gxh.model.Question" resultType="long">
+        select question_id from question where question.question_title = #{title} and question.question_content = #{content};
+    </select>
+
+
+</mapper>

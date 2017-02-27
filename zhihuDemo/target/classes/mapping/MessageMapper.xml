@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gxh.dao.MessageDao" >
+
+    <resultMap id="BaseResultMap" type="com.gxh.model.Message" >
+        <id column="message_id" property="id" />
+        <result column="from_id" property="fromId"/>
+        <result column="to_id" property="toId"/>
+        <result column="content" property="content"/>
+        <result column="conversation_id" property="conversationId"/>
+        <result column="create_date" property="createDate"/>
+        <result column="has_read" property="hasRead"/>
+    </resultMap>
+
+    <select id="getConversationList" resultMap="BaseResultMap" parameterType="long" >
+        select * from ( select * from message where from_id=#{id} or to_id=#{id} order by create_date desc limit 1000) t group by conversation_id desc order by create_date desc
+    </select>
+
+    <select id="getConvesationUnreadCount" resultType="int">
+        select count(message_id) from message where has_read=0 and to_id=#{userId} and conversation_id=#{conversationId}
+    </select>
+
+    <select id="getConversationDetail" resultMap="BaseResultMap" >
+        select * from message where conversation_id=#{conversationId} order by create_date desc
+    </select>
+
+    <update id="updateStatusByMessageId">
+        update message set has_read=#{status} where message_id = #{id}
+    </update>
+
+    <update id="updateStatusByConversationId">
+        update message set has_read=#{status} where conversation_id = #{id}
+    </update>
+
+    <insert id="addMessage" parameterType="com.gxh.model.Message" >
+        insert into message ( from_id, to_id, content, conversation_id, create_date, has_read)
+        values (#{fromId}, #{toId}, #{content}, #{conversationId}, #{createDate}, #{hasRead})
+    </insert>
+</mapper>

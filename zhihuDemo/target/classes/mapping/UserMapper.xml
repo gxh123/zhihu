@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gxh.dao.UserDao" >
+
+    <resultMap id="BaseResultMap" type="com.gxh.model.User" >
+        <id column="user_id" property="id" />
+        <result column="user_name" property="name"/>
+        <result column="user_password" property="password" />
+        <result column="user_avatar" property="avatar" />
+        <result column="user_salt" property="salt"/>
+        <result column="user_phone" property="phone"/>
+        <result column="user_email" property="email"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="long" >
+        select user_id, user_name, user_password, user_avatar, user_salt, user_phone, user_email from user where user_id = #{id}
+    </select>
+
+    <select id="selectByName" resultMap="BaseResultMap" parameterType="String" >
+        select user_id, user_name, user_password, user_avatar, user_salt, user_phone, user_email from user where user_name = #{name}
+    </select>
+
+    <select id="selectByPhone" resultMap="BaseResultMap" parameterType="String" >
+        select user_id, user_name, user_password, user_avatar, user_salt, user_phone, user_email from user where user_phone = #{phone}
+    </select>
+
+    <select id="selectByEmail" resultMap="BaseResultMap" parameterType="String" >
+        select user_id, user_name, user_password, user_avatar, user_salt, user_phone, user_email from user where user_email = #{email}
+    </select>
+
+    <insert id="insert" parameterType="com.gxh.model.User" >
+        insert into user ( user_name, user_password, user_avatar, user_salt, user_phone, user_email)
+                  values (#{name}, #{password}, #{avatar}, #{salt}, #{phone}, #{email})
+    </insert>
+
+</mapper>

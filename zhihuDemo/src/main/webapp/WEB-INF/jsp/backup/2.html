@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="scripts/jquery.json.min.js"></script>
+</head>
+<body style="margin-left: 500px;line-height: 20px">
+<div>这是div1
+    <div class="div11">这是div1.1~~~
+    </div>
+</div>
+<div>这是div2
+    <div>这是div2.1
+        <div class="div211">这是div2.1.1</div>
+    </div>
+    <div>这是div2.2</div>
+</div>
+<script>
+    $('.div11').click(function () {
+        var newNode = document.querySelector('.div11');
+//        alert($(this).parent().next().children().children()[0]);
+
+
+        $(this).parent().next().children().children()[0].appendChild(newNode.cloneNode(true));
+    });
+
+</script>
+</body>
+</html>

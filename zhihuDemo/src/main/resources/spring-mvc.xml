@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                        http://www.springframework.org/schema/mvc
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+    <!-- 自动扫描  @Controller-->
+    <context:component-scan base-package="com.gxh"/>
+
+    <!-- 开启注解 -->
+    <mvc:annotation-driven/>
+
+    <!-- 允许对静态资源文件的访问 -->
+    <mvc:default-servlet-handler/>
+
+    <!--下面三条的也可以-->
+    <!--<mvc:resources mapping="/assets/js/**" location="/WEB-INF/assets/js/"/>-->
+    <!--<mvc:resources mapping="/assets/css/**" location="/WEB-INF/assets/css/"/>-->
+    <!--<mvc:resources mapping="/assets/img/**" location="/WEB-INF/assets/img/"/>-->
+    <mvc:resources mapping="/assets/**" location="/WEB-INF/assets/"/>
+
+    <!--<mvc:resources mapping="/assets/css/*.css" location="/assets/css"/>-->
+    <!--<mvc:resources mapping="/assets/js/*.js" location="/assets/js"/>-->
+    <!--<mvc:resources mapping="/assets/img/*.png" location="/assets/img"/>-->
+    <!--<mvc:resources mapping="/assets/img/*.gif" location="/assets/img"/>-->
+
+    <!--<mvc:resources location="/" mapping="/**/*.js"/>-->
+    <!--<mvc:resources location="/" mapping="/**/*.css"/>-->
+    <!--<mvc:resources location="/" mapping="/**/*.png"/>-->
+    <!--<mvc:resources location="/" mapping="/**/*.gif"/>-->
+
+    <!-- 定义跳转的文件的前后缀 ，视图模式配置 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--配置拦截器, 多个拦截器,顺序执行 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--Table Ant Wildcard Characters
+            Wildcard 	Description
+            ? 	        匹配任何单字符
+            * 	        匹配0或者任意数量的字符
+            ** 	        匹配0或者更多的目录-->
+
+            <!--Table Example Ant-Style Path Patterns
+            Path 	        Description
+            /app/*.x 	    匹配(Matches)所有在app路径下的.x文件
+            /app/p?ttern 	匹配(Matches) /app/pattern 和 /app/pXttern,但是不包括/app/pttern
+            /**/example 	匹配(Matches) /app/example, /app/foo/example, 和 /example
+            /app/**/dir/file. 	匹配(Matches) /app/dir/file.jsp, /app/foo/dir/file.html,/app/foo/bar/dir/file.pdf, 和 /app/dir/file.java
+            /**/*.jsp 	    匹配(Matches)任何的.jsp 文件-->
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/reglogin"/>
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/register"/>
+            <mvc:exclude-mapping path="/getCaptcha"/>
+            <mvc:exclude-mapping path="/assets/**"/>
+            <mvc:exclude-mapping path="/uploadFiles/**"/>
+            <mvc:exclude-mapping path="/mockdata/**"/>
+            <bean class="com.gxh.authorization.interceptior.AuthorizationInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!-- 文件上传配置 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 默认编码 -->
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 上传文件大小限制为31M，31*1024*1024 -->
+        <property name="maxUploadSize" value="32505856"/>
+        <!-- 内存中的最大值 -->
+        <property name="maxInMemorySize" value="4096"/>
+    </bean>
+
+</beans>

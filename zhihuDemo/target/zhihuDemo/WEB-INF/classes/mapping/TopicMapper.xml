@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gxh.dao.TopicDao" >
+
+    <resultMap id="BaseResultMap" type="com.gxh.model.Topic" >
+        <id column="topic_id" property="id" />
+        <result column="topic_name" property="name"/>
+        <result column="topic_description" property="description" />
+    </resultMap>
+
+    <select id="selectByName" resultMap="BaseResultMap" parameterType="String" >
+        select topic_id, topic_name, topic_description from topic where topic_name = #{name}
+    </select>
+
+    <insert id="insert" parameterType="com.gxh.model.Topic" >
+        insert into topic ( topic_name, topic_description) values (#{name}, #{description})
+    </insert>
+
+</mapper>

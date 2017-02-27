@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gxh.dao.AnswerDao" >
+
+    <insert id="addAnswer" parameterType="com.gxh.model.Answer" >
+        insert into answer ( question_id, answerer_id, answer_content, answer_agreements, answer_create_date)
+                  values (#{question.id}, #{answerer.id}, #{content}, #{agreements}, #{createDate})
+    </insert>
+
+    <update id="updateAgreements">
+        update answer set answer_agreements=#{arg1} where answer_id = #{arg0}
+    </update>
+
+    <update id="updateDisagreements">
+        update answer set answer_disagreements=#{arg1} where answer_id = #{arg0}
+    </update>
+
+    <select id="getAnswerById" resultMap="AnswerResultMap" parameterType="long" >
+        select answer_id, answer.question_id, answerer_id, answer_content, answer_agreements, answer_modify_date,user_id ,user_name,user_avatar,question_title,question_content
+            from answer,user,question where answer_id = #{id} and answerer_id = user.user_id and answer.question_id = question.question_id
+    </select>
+    <resultMap id="AnswerResultMap" type="com.gxh.model.Answer" >
+        <id column="answer_id" property="id" />
+        <result column="question_id" property="question.id"/>
+        <result column="answerer_id" property="answerer.id" />
+        <result column="answer_content" property="content"/>
+        <result column="answer_agreements" property="agreements"/>
+        <result column="answer_modify_date" property="modifyDate"/>
+        <association column="answerer_id" property="answerer" javaType="com.gxh.model.User">
+            <id column="user_id" property="id"/>
+            <result column="user_name" property="name"/>
+            <result column="user_avatar" property="avatar"/>
+        </association>
+        <association column="question_id" property="question" javaType="com.gxh.model.Question">
+            <id column="question_id"  property="id"/>
+            <result column="question_title" property="title" />
+            <result column="question_content" property="content"/>
+        </association>
+    </resultMap>
+
+</mapper>

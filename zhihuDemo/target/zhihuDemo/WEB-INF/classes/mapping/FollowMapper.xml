@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gxh.dao.FollowDao" >
+
+    <resultMap id="BaseResultMap" type="com.gxh.model.Follow" >
+        <id column="user_id" property="id" />
+        <result column="target_id" property="targetId"/>
+    </resultMap>
+
+    <select id="getFollowers" resultMap="FollowResultMap" parameterType="long" >
+        select user.user_id, user_name, user_avatar from user
+          LEFT JOIN follow on follow.user_id = user.user_id  where follow.target_id = #{targetId}
+    </select>
+    <resultMap id="FollowResultMap" type="com.gxh.model.User" >
+        <id column="user_id" property="id" />
+        <result column="user_name" property="name"/>
+        <result column="user_avatar" property="avatar"/>
+    </resultMap>
+
+    <select id="getFollowings" resultMap="FollowResultMap" parameterType="long" >
+        select user.user_id, user_name, user_avatar from user
+          LEFT JOIN follow on follow.target_id = user.user_id  where follow.user_id = #{id}
+    </select>
+
+    <select id="getFollowersIds" resultType="long">
+        select user_id from follow where follow.target_id = #{objectId} and follow.target_type = #{objectType}
+    </select>
+
+    <select id="getFollowingsIds" resultType="long">
+        select target_id from follow where follow.user_id = #{userId} and follow.target_type = #{objectType}
+    </select>
+
+    <insert id="addFollow" parameterType="com.gxh.model.Follow" >
+        insert into follow ( user_id, target_id, target_type) values (#{id}, #{targetId},
+          #{targetType, typeHandler=com.gxh.mybatis.EnumObjectTypeHandler})
+    </insert>
+
+    <delete id="removeFollow" parameterType="com.gxh.model.Follow" >
+        delete from follow where user_id=#{id} and target_id=#{targetId} and
+        target_type=#{targetType, typeHandler=com.gxh.mybatis.EnumObjectTypeHandler}
+    </delete>
+
+</mapper>

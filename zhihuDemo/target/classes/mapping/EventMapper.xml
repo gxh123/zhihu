@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gxh.dao.EventDao" >
+
+    <insert id="addEvent" parameterType="com.gxh.mq.Event" >
+        insert into event (creator_id, event_type, object_type, object_id, object_owner_id, create_time)
+            values (#{creatorId}, #{eventType, typeHandler=com.gxh.mybatis.EnumEventTypeHandler
+            }, #{objectType, typeHandler=com.gxh.mybatis.EnumObjectTypeHandler},
+            #{objectId}, #{objectOwnerId}, #{createTime})
+    </insert>
+
+    <update id="updateEventTime" parameterType="com.gxh.mq.Event" >
+        update event set create_time=#{createTime} where creator_id = #{creatorId}
+        and event_type = #{eventType, typeHandler=com.gxh.mybatis.EnumEventTypeHandler}
+        and object_type = #{objectType, typeHandler=com.gxh.mybatis.EnumObjectTypeHandler}
+        and object_id = #{objectId}
+    </update>
+
+    <resultMap id="BaseResultMap" type="com.gxh.mq.Event" >
+        <id column="event_id" property="id" />
+        <result column="creator_id" property="creatorId"/>
+        <result column="event_type" property="eventType" typeHandler="com.gxh.mybatis.EnumEventTypeHandler"/>
+        <result column="object_type" property="objectType" typeHandler="com.gxh.mybatis.EnumObjectTypeHandler"/>
+        <result column="object_id" property="objectId" />
+        <result column="object_owner_id" property="objectOwnerId" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <select id="getEventsByCreatorId" resultMap="BaseResultMap" parameterType="long" >
+        select event_id, creator_id, event_type, object_type, object_id, object_owner_id, create_time
+        from event where creator_id = #{creatorId} limit 500
+    </select>
+
+    <select id="getEventsByFollowerId" resultMap="BaseResultMap" parameterType="long" >
+        select event_id, creator_id, event_type, object_type, object_id, object_owner_id, create_time
+        from event LEFT JOIN follow on follow.target_id = event.creator_id where follow.user_id = #{followerId} limit 500
+    </select>
+
+    <select id="getEventTime" resultType="java.util.Date" parameterType="com.gxh.mq.Event" >
+        select create_time from event where creator_id = #{creatorId}
+        and event_type = #{eventType, typeHandler=com.gxh.mybatis.EnumEventTypeHandler}
+        and object_type = #{objectType, typeHandler=com.gxh.mybatis.EnumObjectTypeHandler}
+        and object_id = #{objectId}
+    </select>
+
+    <select id="getEvents" resultMap="BaseResultMap" parameterType="com.gxh.mq.Event">
+        select event_id, creator_id, event_type, object_type, object_id, object_owner_id, create_time
+        from event where event_type = #{eventType, typeHandler=com.gxh.mybatis.EnumEventTypeHandler}
+        and object_type = #{objectType, typeHandler=com.gxh.mybatis.EnumObjectTypeHandler}
+        and object_id = #{objectId}
+    </select>
+
+    <delete id="removeEvent" parameterType="com.gxh.mq.Event">
+        delete from event where creator_id=#{creatorId} and event_type=#{eventType, typeHandler=com.gxh.mybatis.EnumEventTypeHandler}
+          and object_type=#{objectType, typeHandler=com.gxh.mybatis.EnumObjectTypeHandler}
+          and object_id=#{objectId} and object_owner_id=#{objectOwnerId};
+    </delete>
+
+</mapper>

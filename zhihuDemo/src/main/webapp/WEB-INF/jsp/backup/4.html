@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap 实例 - 水平表单</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="hhh" id="111">
+
+</div>
+<form class="form-horizontal" role="form">
+    <div class="form-group" id="123">
+        <textarea class="form-control" rows="2" required placeholder="写下你的评论…"></textarea>
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-default">登录</button>
+    </div>
+</form>
+<script>
+    $(".btn").click(function () {
+//        alert($(".form-control").parent()[0].innerHTML);
+//        alert($(this).parent().prev().children()[0].innerHTML);
+//        alert($(this).parent().prev().children().val());
+        alert($(this).closest(".form-group").attr('id'));
+    });
+
+</script>
+</body>
+</html>

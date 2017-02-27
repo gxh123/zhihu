@@ -1,0 +1,15 @@
+.zu-top{
+    font-size: 18px;
+}
+
+.zu-top .zg-wrap {
+    position: relative;
+    top: 4px;
+}
+
+.zg-wrap {
+    display: inline;
+    float: left;
+    margin-left: 10px;
+    margin-right: 10px;
+}

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="gb2312">
+    <title>用户列表</title>
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<script>
+    // 提交表单
+    function delete_info(id) {
+        if (!id) {
+            alert('Error！');
+            return false;
+        }
+        // var form_data = new Array();
+
+        $.ajax(
+                {
+                    url: "action/user_action.php",
+                    data: {"id": id, "act": "del"},
+                    type: "post",
+                    beforeSend: function () {
+                        $("#tip").html("<span style='color:blue'>正在处理...</span>");
+                        return true;
+                    },
+                    success: function (data) {
+                        if (data > 0) {
+                            alert('操作成功');
+                            $("#tip").html("<span style='color:blueviolet'>恭喜，删除成功！</span>");
+
+                            // document.location.href='world_system_notice.php'
+                            location.reload();
+                        }
+                        else {
+                            $("#tip").html("<span style='color:red'>失败，请重试</span>");
+                            alert('操作失败');
+                        }
+                    },
+                    error: function () {
+                        alert('请求出错');
+                    },
+                    complete: function () {
+                        // $('#tips').hide();
+                    }
+                });
+
+        return false;
+    }
+
+    // 编辑表单
+    function get_edit_info(user_id) {
+        if (!user_id) {
+            alert('Error！');
+            return false;
+        }
+        // var form_data = new Array();
+
+        $.ajax(
+                {
+                    url: "action/user_action.php",
+                    data: {"user_id": user_id, "act": "get"},
+                    type: "post",
+                    beforeSend: function () {
+                        // $("#tip").html("<span style='color:blue'>正在处理...</span>");
+                        return true;
+                    },
+                    success: function (data) {
+                        if (data) {
+
+                            // 解析json数据
+                            var data = data;
+
+                            var data_obj = eval("(" + data + ")");
+
+                            // 赋值
+                            $("#user_id").val(data_obj.user_id);
+
+                            $("#name").val(data_obj.name);
+                            $("#address").val(data_obj.address);
+                            $("#remark").val(data_obj.remark);
+                            $("#act").val("edit");
+
+                            // 将input元素设置为readonly
+                            $('#user_id').attr("readonly", "readonly")
+                            // location.reload();
+                        }
+                        else {
+                            $("#tip").html("<span style='color:red'>失败，请重试</span>");
+                            //  alert('操作失败');
+                        }
+                    },
+                    error: function () {
+                        alert('请求出错');
+                    },
+                    complete: function () {
+                        // $('#tips').hide();
+                    }
+                });
+
+        return false;
+    }
+
+    // 提交表单
+    function check_form() {
+        var user_id = $.trim($('#user_id').val());
+        var act = $.trim($('#act').val());
+
+        if (!user_id) {
+            alert('用户ID不能为空！');
+            return false;
+        }
+        var form_data = $('#form_data').serialize();
+
+        // 异步提交数据到action/add_action.php页面
+        $.ajax(
+                {
+                    url: "action/user_action.php",
+                    data: {"form_data": form_data, "act": act},
+                    type: "post",
+                    beforeSend: function () {
+                        $("#tip").html("<span style='color:blue'>正在处理...</span>");
+                        return true;
+                    },
+                    success: function (data) {
+                        if (data > 0) {
+
+                            var msg = "添加";
+                            if (act == "edit") msg = "编辑";
+                            $("#tip").html("<span style='color:blueviolet'>恭喜，" + msg + "成功！</span>");
+                            // document.location.href='system_notice.php'
+                            alert(msg + "OK！");
+                            location.reload();
+                        }
+                        else {
+                            $("#tip").html("<span style='color:red'>失败，请重试</span>");
+                            alert('操作失败');
+                        }
+                    },
+                    error: function () {
+                        alert('请求出错');
+                    },
+                    complete: function () {
+                        $('#acting_tips').hide();
+                    }
+                });
+
+        return false;
+    }
+
+    $(function () {
+        $('#addUserModal').on('hide.bs.modal', function () {
+            // 关闭时清空edit状态为add
+            $("#act").val("add");
+            location.reload();
+        })
+    });
+</script>
+<body>
+<div class="container" style="min-width: 1200px;">
+
+    <button type="button" class="btn btn-info" data-toggle="modal" onclick="return get_edit_info({user_id})"
+            data-target="#addUserModal">编辑
+    </button>
+
+    <!-- 模态框示例（Modal） -->
+    <form method="post" action="" class="form-horizontal" role="form" id="form_data" onsubmit="return check_form()"
+          style="margin: 20px;">
+        <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #106fce">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="background-color: #ffffff">
+                            &times;
+                        </button>
+                        <h5 class="modal-title" id="myModalLabel">
+                            提问
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">地址</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="address" value="" id="address" placeholder="地址">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注</label>
+                                <div class="col-sm-9">
+                                <textarea class="form-control" name="remark" value="{remark}" id="remark" placeholder="备注">
+                                </textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            提交
+                        </button>
+                        <span id="tip"> </span>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </form>
+</div>
+</body>
+</html>
+

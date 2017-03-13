@@ -109,7 +109,7 @@ public class FollowHandler implements EventHandler {
             if (operations.size() > 500) {
                 operations.removeRange(0, -501);  ////限定长度为500，超过500条则删掉时间早的
             }
-        }else{    //被关注的对象是人时，需要在动态表里增加这个动态
+        }else{    //被关注的对象不是人时，需要在动态表里增加这个动态
             //在数据库的动态表里增加
             eventDao.addEvent(event);
             //在redis里增加（将动态存入redis，同时自己的动态表里增加，粉丝的feed表里增加）

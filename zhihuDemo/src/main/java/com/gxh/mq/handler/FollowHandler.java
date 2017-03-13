@@ -84,7 +84,6 @@ public class FollowHandler implements EventHandler {
             redisService.addToCacheSet(key, followingId);
         }
 
-        //目前设定用户的feed里只存关注的人的动态，不存问题的、话题的...
         if(event.getObjectType() == ObjectType.USER) {  //被关注的对象是人时，关注者在自己的feed表里加入被关注的人的动态
             key = keyPrefix + followingId + "_events";
             Set<ZSetOperations.TypedTuple<Long>> followingActionWithTime = redisService.getCacheZSetWithScore(key);

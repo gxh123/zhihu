@@ -53,6 +53,9 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter{
         return false;
     }
 
-
-
+    //结束应该清掉userHolder里放的这个user
+    @Override
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+        userHolder.clear();
+    }
 }
